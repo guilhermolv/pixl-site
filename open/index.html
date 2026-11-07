@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open in Pixl</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <header><a class="brand" href="../">Pixl</a></header>
+  <main>
+    <h1>Open in Pixl</h1>
+    <p id="message">Someone shared a game with you on Pixl.</p>
+    <p><a id="open" class="button" href="pixl://">Open in Pixl</a></p>
+    <div class="card">
+      <p><strong>Don&rsquo;t have Pixl yet?</strong></p>
+      <p id="store">Pixl is coming soon to the App Store.</p>
+    </div>
+  </main>
+  <footer>
+    <a href="../privacy/">Privacy Policy</a>
+    <a href="../terms/">Terms of Use</a>
+    <a href="../support/">Support</a>
+  </footer>
+  <script>
+    (function () {
+      // Share links look like .../open/?g=<game id>. Only a UUID is accepted.
+      var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      var id = new URLSearchParams(window.location.search).get('g');
+      var button = document.getElementById('open');
+      if (!id || !UUID.test(id)) {
+        document.getElementById('message').textContent = 'This link is not valid.';
+        button.style.display = 'none';
+        return;
+      }
+      var target = 'pixl://games/' + id.toLowerCase();
+      button.setAttribute('href', target);
+      // Try to open the app straight away on a phone; the button is the fallback.
+      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        window.setTimeout(function () { window.location.href = target; }, 300);
+      }
+      // Replace with the App Store link once Pixl is live:
+      // https://apps.apple.com/app/id6790833531
+    })();
+  </script>
+</body>
+</html>
